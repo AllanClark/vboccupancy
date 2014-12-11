@@ -1,0 +1,9 @@
+Package: vboccupancy
+Type: Package
+Title: Variational Bayes approach to site-occupancy models.
+Version: 1.0
+Date: 2014-09-14
+Author: Allan E Clark
+Maintainer: <allan.clark@uct.ac.za>
+Description: Some functions used to fit the basic occupancy model developed by Royle and Dorazio (2008)
+License: GPL-2?

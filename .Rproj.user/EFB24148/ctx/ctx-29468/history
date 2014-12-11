@@ -1,0 +1,512 @@
+#W.eg
+}
+names(dframe)
+colnames(dframe)
+W.eg=list(list())
+for (i in 1:n)
+{
+print(i)
+if (nvisits[i]!=1)
+{
+dframe<-as.data.frame(W[i,1:nvisits[i],])
+}else
+{
+dframe<-as.data.frame(matrix(W[i,1:nvisits[i],],nrow=1))
+}
+names(dframe)<-c("int","w1","w2","w3")
+#mode(dframe)
+print(dframe)
+W.eg[[i]]<-dframe
+#W.eg
+}
+mode(W.eg)
+W.eg[[1]]
+mode(W.eg[[1]])
+X.eg
+mode(X.eg)
+L3 <- LETTERS[1:3]
+fac <- sample(L3, 10, replace = TRUE)
+(d <- data.frame(x = 1, y = 1:10, fac = fac))
+## The "same" with automatic column names:
+data.frame(1, 1:10, sample(L3, 10, replace = TRUE))
+d
+mode(d)
+W.eg
+W.eg=list(list())
+for (i in 1:n)
+{
+print(i)
+if (nvisits[i]!=1)
+{
+dframe<-as.data.frame(W[i,1:nvisits[i],][,-1])
+}else
+{
+dframe<-as.data.frame(matrix(W[i,1:nvisits[i],][-1],nrow=1))
+}
+names(dframe)<-c("w1","w2","w3")
+#mode(dframe)
+print(dframe)
+W.eg[[i]]<-dframe
+#W.eg
+}
+W.eg
+nvisits
+data(mallard)
+mallardUMF <- unmarkedFramePCount(mallard.y, siteCovs = mallard.site,
+obsCovs = mallard.obs)
+require(unmarked)
+data(mallard)
+mallardUMF <- unmarkedFramePCount(mallard.y, siteCovs = mallard.site,
+obsCovs = mallard.obs)
+mallard.obs
+?mallard
+mallard.y
+setwd("F:/Results/Application")
+require(unmarked)
+alldat <- read.csv("Fairy_flycatcher.csv", header=T)[, -1]
+#alldat <- read.table("Fairy_flycatcher2.txt", header=T)[, -1]
+head(alldat)
+names(alldat)
+alldat$yearF <- paste( strptime(as.character(alldat$Start_Date),format="%Y/%m/%d")$year - 100, "F", sep="")
+head(alldat$yearF, 20)
+#make some new variables
+alldat[, 34]<- (alldat[,8]-mean(alldat[,8]))/sd(alldat[,8]) #standardized total number of species
+colnames(alldat)[34]<-"nspp"
+#the huntley variables standardized
+alldat[, 35]<- (alldat[,14]-mean(alldat[,14]))/sd(alldat[,14]) #standardized GDD0
+alldat[, 36]<- (alldat[,15]-mean(alldat[,15]))/sd(alldat[,15]) #standardized GDD5
+alldat[, 37]<- (alldat[,16]-mean(alldat[,16]))/sd(alldat[,16]) #standardized MTCO
+alldat[, 38]<- (alldat[,17]-mean(alldat[,17]))/sd(alldat[,17]) #standardized MTWA
+alldat[, 39]<- (alldat[,18]-mean(alldat[,18]))/sd(alldat[,18]) #standardized AET_div_PET
+alldat[, 40]<- (alldat[,19]-mean(alldat[,19]))/sd(alldat[,19]) #standardized Wet_Intensity
+alldat[, 41]<- (alldat[,20]-mean(alldat[,20]))/sd(alldat[,20]) #standardized Dry_Intensity
+alldat[,42]<-alldat[,17]-alldat[,16] #maximum mean temp - min mean temp
+alldat[,42]<- (alldat[,42]-mean(alldat[,42]))/sd(alldat[,42]) #standardized mean range
+colnames(alldat)[35:42]<-c("GDD0_s","GDD5_s","MTCO_s",	"MTWA_s",	"AET_div_PET_s",	"Wet_Intensity_s","Dry_Intensity_s","Range_mean")
+#we select all regions
+#alldat$region <- ifelse(alldat$y_coord > -26.5, "N", "S")
+## Convert the *survey specific* covariates into long form
+names(alldat)  #make sure columns number (below) match up with correct columns
+# convert the long data frame into the wide format required by unmarked
+out.y <- unstack(alldat[ , c(11, 2)]) #Spp_On_Card
+#detection covariates
+out.intensive <- unstack(alldat[ , c(28, 2)]) #log number of intensive hours birding
+out.year <- unstack(alldat[ , c(30, 2)]) #year.F (baseline : 2008=0)
+out.logtotal <- unstack(alldat[ , c(31, 2)] ) #log total number of hours birding
+out.day.std <- unstack(alldat[ , c(32, 2)])
+out.yearF <- unstack(alldat[ , c(33, 2)])
+out.nspp <- unstack(alldat[ , c(34, 2)])
+#occupancy covariates
+#The huntley variables standardized
+out.GDD0<-unstack(alldat[ , c(35, 2)])
+out.GDD5<-unstack(alldat[ , c(36, 2)])
+out.MTCO<-unstack(alldat[ , c(37, 2)])
+out.MTWA<-unstack(alldat[ , c(38, 2)])
+out.AET_div_PET<-unstack(alldat[ , c(39, 2)])
+out.Wet_Intensity<-unstack(alldat[ , c(40, 2)])
+out.Dry_Intensity<-unstack(alldat[ , c(41, 2)])
+out.Range<-unstack(alldat[ , c(42, 2)])
+#Biome covariates
+out.SV<-unstack(alldat[ , c(21, 2)])
+out.G<-unstack(alldat[ , c(22, 2)])
+out.AZ<-unstack(alldat[ , c(23, 2)])
+out.NK<-unstack(alldat[ , c(24, 2)])
+#No limit has been made of the number of surveys - this can be changed later!
+len.y<-NULL
+max.y<-NULL
+for (i in 1:length( out.y))
+{
+len.y[i]<- length(out.y[[i]])
+max.y[i]<- max(out.y[[i]])
+}
+maxSurveys<-max(len.y)
+#now convert these lists into the ragged arrrays
+DummyMatInit<-matrix(NA, nrow= length(unique(alldat$Pentad )), ncol = maxSurveys)
+y <- DummyMatInit ## absence presence data
+#detection covariates
+intensive <- DummyMatInit
+year <- DummyMatInit
+log.total <- DummyMatInit
+day.Std <- DummyMatInit
+yearF <- DummyMatInit
+nspp <- DummyMatInit
+#occupancy covariates
+#The huntley variables standardized
+gdd0 <- DummyMatInit
+gdd5 <- DummyMatInit
+mtco <- DummyMatInit
+mtwa <- DummyMatInit
+aet_div_pet <- DummyMatInit
+wet <- DummyMatInit
+dry <- DummyMatInit
+range.mean<- DummyMatInit
+#Biome covariates
+sv<-DummyMatInit
+g<-DummyMatInit
+az<-DummyMatInit
+nk<-DummyMatInit
+j <- 1
+for(i in 1:length(out.y) )
+{
+if( is.null( out.y[[i]] ) == FALSE)
+{
+Len.y.i<-length( out.y[[i]])
+y[j, 1:Len.y.i] <- out.y[[i]]
+intensive[j, 1:Len.y.i] <- out.intensive[[i]]
+year[j, 1:Len.y.i] <- out.year[[i]]
+log.total[j, 1:Len.y.i] <- out.logtotal[[i]]
+day.Std[j, 1:Len.y.i] <- out.day.std[[i]]
+yearF[j, 1:Len.y.i] <- out.yearF[[i]]
+nspp[j, 1:Len.y.i] <- out.nspp[[i]]
+#huntley variables
+gdd0[j, 1:Len.y.i] <- out.GDD0[[i]]
+gdd5[j, 1:Len.y.i] <- out.GDD5[[i]]
+mtco[j, 1:Len.y.i] <- out.MTCO[[i]]
+mtwa[j, 1:Len.y.i] <- out.MTWA[[i]]
+aet_div_pet[j, 1:Len.y.i] <- out.AET_div_PET[[i]]
+wet[j, 1:Len.y.i] <- out.Wet_Intensity[[i]]
+dry[j, 1:Len.y.i] <- out.Dry_Intensity[[i]]
+#biomes
+sv[j, 1:Len.y.i] <- out.SV[[i]]
+g[j, 1:Len.y.i] <- out.G[[i]]
+az[j, 1:Len.y.i] <- out.AZ[[i]]
+nk[j, 1:Len.y.i] <- out.NK[[i]]
+range.mean[j, 1:Len.y.i] <- out.Range[[i]]
+j <- j + 1
+}
+}
+# and now put the matrices into the correct format
+#detection covariates
+#year should be categorical!
+obs.covs <- list(intensive=intensive[,],
+year=year[,],
+log.total=log.total[,],
+day.Std=day.Std[,],
+yearF=yearF[,],
+nspp=nspp[,])
+#############
+###
+### Clean up  the site specific variables -------------------------------------------
+###
+#first isolate the site covariates that will be considered.
+names(alldat)
+#occupancy covariates
+#Biome covariates, The huntley variables standardized
+site.dat <- alldat[ , c(2, 21:24,35:42)]  #change later
+head(site.dat)
+site.dat <- unique(site.dat)
+head(site.dat)
+dim(site.dat)
+dim(y)
+OMdat <- unmarkedFrameOccu(y=y[,], siteCovs = site.dat, obsCovs=obs.covs)
+OMdat
+dim(OMdat)
+head(Data)
+head(OMdat)
+head(OMdat[,1:10])
+require(MASS)
+set.seed(1)
+beta.param = c(-1.85, 1.5, -0.5)
+n = 5
+#create 2 site covariates used to model occupancy
+x1 = runif(n, -2,2)
+x1 = (x1 - mean(x1)) / sd(x1)
+x2 = runif(n, -5,5)
+x2 = (x2 - mean(x2)) / sd(x2)
+X = cbind(rep(1,n), x1, x2)
+psi = as.vector(1/(1+exp(-X %*% beta.param))) ##logistic link function used
+z = rbinom(n, size=1, prob=psi)
+J = 3 #the maximum number of surveys (some sites might have fewer visits)
+#make three observation covariates used to model the detection probs
+alpha.param = c(-1.35, 1.0, 0.5, -.25)
+w1 = runif(n*J, -5,5)
+w1 = (w1 - mean(w1)) / sd(w1)
+w2 = runif(n*J, -1,1)
+w2 = (w2 - mean(w2)) / sd(w2)
+w3 = runif(n*J, 0,5)
+w3 = (w3 - mean(w3)) / sd(w3)
+W = array(dim=c(n,J,4))
+W[,,1] = 1
+W[,,2] = w1
+W[,,3] = w2
+W[,,4] = w3
+p = matrix(nrow=n, ncol=J)
+y = matrix(nrow=n, ncol=J)
+for (j in 1:J)
+{
+p[, j] = c(1/(1+exp(-W[,j,] %*% alpha.param)))
+y[, j] = rbinom(n, size=1, prob=z*p[, j])
+}
+#-----------------------------------------------------------------
+#Now lets simulate the number of visits to each of the sites
+#i.e. we need to set some of the y and w entries equal to
+#NA
+nvisits<-sample(1:J, n, replace=T)
+empty.sites<-which(nvisits!= J)
+for (i in 1:length(empty.sites))
+{
+#adds NA to sites with visits less than J
+y[ empty.sites[i], (nvisits[empty.sites[i]]+1):J ] <- NA
+#adds NA to W entries with visits less than J
+W[ empty.sites[i], (nvisits[empty.sites[i]]+1):J, ] <- NA
+}
+#Note W[1,,] are the covariate values for site i
+#each row is for a specific visit
+#-----------------------------------------------------------------
+#An MxJ matrix of the observed measured data,
+#where M is the number of sites and J is the
+#maximum number of observations per site.
+Y.eg<-y
+#-----------------------------------------------------------------
+#siteCovs
+#A data.frame of covariates that vary at the site level.
+#This should have M rows and one column per covariate
+X.eg=as.data.frame(cbind(x1,x2))
+#-----------------------------------------------------------------
+#obsCovs
+#the obsCovs matrix is constructed as per the 'unmarked' package
+#i.e. W.eg.df is a named list of data.frames of covariates that
+#vary within sites.
+#i.e. The dataframes are of dimension n by J
+#where each row is associated with a site
+#and each column represents a site visit.
+#e.g. W.eg.l1$W1[1, ] = the covariate values for site 1 for all of the
+#visits. Note that some of the entries might be 'NA'
+#meaning that no visit took place at those occasions
+W1=matrix(nrow=n, ncol=J)
+W2=matrix(nrow=n, ncol=J)
+W3=matrix(nrow=n, ncol=J)
+for (i in 1:n)
+{
+W1[i,]<- W[i,,2]
+W2[i,]<- W[i,,3]
+W3[i,]<- W[i,,4]
+}
+#colnames(W1)<-paste("W1.",1:J,sep="")
+#colnames(W2)<-paste("W2.",1:J,sep="")
+#colnames(W3)<-paste("W3.",1:J,sep="")
+W.eg.l1<-list(W1=W1, W2=W2, W3=W3)
+W.eg.l1
+#-----------------------------------------------------------------
+#An alternate way of 'viewing' the site covariates is as follows:
+#Create a list element; one for each site, where the data
+#for each site have been stacked one below the other either as
+#a dataframe or as a matrix. e.g.
+#W.eg[[2]] is the data for site 2.
+W.eg.l2=list(list())
+for (i in 1:n)
+{
+if (nvisits[i]!=1)
+{
+dframe<-as.data.frame(W[i,1:nvisits[i],][,-1])
+}else
+{
+dframe<-as.data.frame(matrix(W[i,1:nvisits[i],][-1],nrow=1))
+}
+names(dframe)<-c("w1","w2","w3")
+W.eg.l2[[i]]<-dframe
+}
+#-----------------------------------------------------------------
+#Two different ways of representing the observation covariates
+W.eg.l1
+W.eg.l2
+#If the site covariates are provided as per W.eg.l2
+#then we can construct W.eg as follows
+W.eg<-NULL
+#n <-length(W.eg.l2)
+for (i in 1:n)
+{
+W.eg<- rbind(W.eg, W.eg.l2[[i]])
+}
+W.eg.l1
+#-----------------------------------------------------------------
+require(unmarked)
+site.dat<-X.eg
+obs.covs<-W.eg.l1#list(W1=W1[,], W2=W2[,], W3=W3[,])
+Data <- unmarkedFrameOccu(y=y[,], siteCovs = site.dat, obsCovs=obs.covs)
+Data
+occu(y~ w2~ x1  , data=Data, engine=c("C"))
+ls()
+rm(w1,w2,w3,W1,W2,W3)
+occu(y~ w2~ x1  , data=Data, engine=c("C"))
+occu(y~ W2~ x1  , data=Data, engine=c("C"))
+length(y)
+dim(y)
+Data
+W1=matrix(NA,nrow=n, ncol=J)
+W2=matrix(NA, nrow=n, ncol=J)
+W3=matrix(NA, nrow=n, ncol=J)
+for (i in 1:n)
+{
+W1[i,]<- W[i,,2]
+W2[i,]<- W[i,,3]
+W3[i,]<- W[i,,4]
+}
+#colnames(W1)<-paste("W1.",1:J,sep="")
+#colnames(W2)<-paste("W2.",1:J,sep="")
+#colnames(W3)<-paste("W3.",1:J,sep="")
+W.eg.l1<-list(W1=W1, W2=W2, W3=W3)
+W.eg.l1
+#-----------------------------------------------------------------
+#An alternate way of 'viewing' the site covariates is as follows:
+#Create a list element; one for each site, where the data
+#for each site have been stacked one below the other either as
+#a dataframe or as a matrix. e.g.
+#W.eg[[2]] is the data for site 2.
+W.eg.l2=list(list())
+for (i in 1:n)
+{
+if (nvisits[i]!=1)
+{
+dframe<-as.data.frame(W[i,1:nvisits[i],][,-1])
+}else
+{
+dframe<-as.data.frame(matrix(W[i,1:nvisits[i],][-1],nrow=1))
+}
+names(dframe)<-c("w1","w2","w3")
+W.eg.l2[[i]]<-dframe
+}
+#-----------------------------------------------------------------
+#Two different ways of representing the observation covariates
+W.eg.l1
+W.eg.l2
+#If the site covariates are provided as per W.eg.l2
+#then we can construct W.eg as follows
+W.eg<-NULL
+#n <-length(W.eg.l2)
+for (i in 1:n)
+{
+W.eg<- rbind(W.eg, W.eg.l2[[i]])
+}
+W.eg.l1
+#-----------------------------------------------------------------
+require(unmarked)
+site.dat<-X.eg
+obs.covs<-W.eg.l1#list(W1=W1[,], W2=W2[,], W3=W3[,])
+Data <- unmarkedFrameOccu(y=y[,], siteCovs = site.dat, obsCovs=obs.covs)
+Data
+dim(W1)
+dim(W2)
+dim(W3)
+W.eg.l1
+W.eg.l2
+W.eg
+names(W.eg)
+W.eg.l1
+W.eg<-NULL
+W.eg.l1[[1]]
+apply(W.eg.l1[[1]],1,length)
+apply(W.eg.l1[[1]],1,length, na.rm=TRUE)
+?length
+apply(W.eg.l1[[1]],1,dim, na.rm=TRUE)
+apply(W.eg.l1[[1]],1,function(x){length(x!=NA})
+apply(W.eg.l1[[1]],1,function(x){length(x!=NA)})
+W.eg.l1[[1]]
+W.eg.l1[[1]][1,]
+apply(W.eg.l1[[1]],1,function(x){sum(x!=NA)})
+W.eg.l1[[1]][1,]
+W.eg.l1[[1]][1,]==NA
+W.eg.l1[[1]][1,]!=NA
+na.omit(W.eg.l1[[1]][1,])
+apply(W.eg.l1[[1]],1,function(x){na.omit(x)})
+apply(W.eg.l1[[1]],1,function(x){length(na.omit(x))})
+nvisits
+apply(W.eg.l1[[1]],1,function(x){length(na.omit(x))})
+na.omit(W.eg.l1[[1]][1,])
+nvisits<-apply(W.eg.l1[[1]],1,function(x){length(na.omit(x))})
+nvisits
+W.eg.la
+W.eg.l1
+cbind(W.eg.l1[[1]],W.eg.l1[[2]],W.eg.l1[[3]])
+length(W.eg.l1)
+W.eg<-NULL
+W.temp<-NULL
+for (i in 1:length(W.eg.l1))
+{
+W.temp<-cbind(W.temp, W.eg.l1[[i]])
+}
+W.temp
+W.eg<-NULL
+W.temp<-NULL
+for (i in 1:length(W.eg.l1))
+{
+W.temp<-rbind(W.temp, W.eg.l1[[i]])
+}
+W.temp
+W.temp<-NULL
+for (i in 1:length(W.eg.l1))
+{
+W.temp<-cbind(W.temp, W.eg.l1[[i]])
+}
+W.temp
+W.eg.l1
+W.eg<-NULL
+#n <-length(W.eg.l2)
+for (i in 1:n)
+{
+W.eg<- rbind(W.eg, W.eg.l2[[i]])
+}
+W.eg
+W.eg.l1
+W.eg.l1
+W.eg
+c(W.eg.l1$W1)
+W.eg<-NULL
+W.eg[1,1]=1
+W.eg<-NULL
+W.temp<-NULL
+for (i in 1:length(W.eg.l1))
+{
+W.temp<-cbind(W.temp, W.eg.l1[[i]])
+}
+W.temp
+na.omit(W.temp[1,])
+na.omit(W.temp[2,])
+na.omit(W.eg.l1$W1[1,])
+c(na.omit(W.eg.l1$W1[1,]))
+c(na.omit(W.eg.l1$W1[2,]))
+c(na.omit(W.temp[1,]))
+c(na.omit(W.temp[2,]))
+nvisit[2]
+nvisits[2]
+matrix( c(na.omit(W.temp[2,])), nrow=nvisits[2])
+matrix( c(na.omit(W.temp[3,])), nrow=nvisits[3])
+nvisits<-apply(W.eg.l1[[1]],1,function(x){length(na.omit(x))})
+nvisits
+W.eg<-NULL
+for (i in 1:n)
+{
+W.eg<-cbind(W.eg, matrix( c(na.omit(W.temp[i,])), nrow=nvisits[i]) )
+}
+W.eg
+W.eg<-NULL
+for (i in 1:n)
+{
+W.eg<-rbind(W.eg, matrix( c(na.omit(W.temp[i,])), nrow=nvisits[i]) )
+}
+W.eg
+W.temp<-NULL
+for (i in 1:length(W.eg.l1))
+{
+W.temp<-cbind(W.temp, W.eg.l1[[i]])
+}
+W.temp
+nvisits<-apply(W.eg.l1[[1]],1,function(x){length(na.omit(x))})
+nvisits
+W.eg<-NULL
+for (i in 1:n)
+{
+W.eg<-rbind(W.eg, matrix( c(na.omit(W.temp[i,])), nrow=nvisits[i]) )
+}
+W.eg
+W.eg.1<-W.eg
+W.eg<-NULL
+#n <-length(W.eg.l2)
+for (i in 1:n)
+{
+W.eg<- rbind(W.eg, W.eg.l2[[i]])
+}
+W.eg
+W.eg.2<-W.eg
+W.eg.2-W.eg.1
+W.eg.l2

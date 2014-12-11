@@ -1,0 +1,16 @@
+{
+    "contents" : "\\name{vboccupancy-package}\n\\alias{vboccupancy-package}\n\\alias{vboccupancy}\n\\docType{package}\n\n\\title{vboccupancy}\n\n\\description{The package provides code in order to fit a Variational Bayes approximation to the occupancy models developed by MacKenzie et al (2002).}\n\n\\details{\n\\tabular{ll}{\nPackage: \\tab vboccupancy\\cr\nType: \\tab Package\\cr\nVersion: \\tab 1.0\\cr\nDate: \\tab 2014-09-07\\cr\nLicense: \\tab GPL-2\\cr\n}\n%An overview of how to use the package, including the most important functions \n}\n\n\\author{A. E. Clark\n\nMaintainer: <allan dot clark at uct dot ac dot za> \n}\n\\references{\n\\itemize{\n%%\\item Dorazio, R. M. and Rodriguez, D. T. (2012), A Gibbs sampler for Bayesian analysis of site-occupancy data. Methods in Ecology and Evolution, 3: 1093-1098. \\url{doi: 10.1111/j.2041-210X.2012.00237.x}\n\\item MacKenzie, D.I., Nichols, J.D., Lachman, G.B., Droege, S., Royle, J.A., Langtimm, C.A. (2002). Estimating site occupancy rates when detection probabilities are less than one. Ecology, 83(8): 2248-2255\n\\item Royle, J. A., & Dorazio, R. M. (2008). Hierarchical modeling and inference in ecology: the analysis of data from populations, metapopulations and communities. Academic Press.}\n}\n\n\\keyword{ package }\n\n\n",
+    "created" : 1418193825876.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4183197738",
+    "id" : "CCE30419",
+    "lastKnownWriteTime" : 1418117117,
+    "path" : "C:/Users/01369661/Dropbox/PhD/Year1/ISEC2014/OccupancyModel2/ISECflash/Results/Package/vboccupancy/man/vboccupancy-package.Rd",
+    "project_path" : "man/vboccupancy-package.Rd",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_doc"
+}
